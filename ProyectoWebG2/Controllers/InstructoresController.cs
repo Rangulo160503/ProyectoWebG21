@@ -26,8 +26,14 @@ namespace ProyectoWebG2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(InstructorVM vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
             // Hash de la contraseña igual que en el registro de usuario
             string contrasenaHash = HashPassword(vm.ContrasenaHash);
             var client = _factory.CreateClient("api");
@@ -44,8 +50,8 @@ namespace ProyectoWebG2.Controllers
             var res = await client.PostAsJsonAsync("admin/instructores", payload);
             if (res.IsSuccessStatusCode)
             {
-                TempData["Msg"] = "Instructor creado correctamente.";
-                return RedirectToAction("Create");
+                TempData["Mensaje"] = "Instructor creado correctamente.";
+                return RedirectToAction("Index");
             }
             TempData["Error"] = "No se pudo crear el instructor.";
             return View(vm);
@@ -76,6 +82,7 @@ namespace ProyectoWebG2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(int id, InstructorVM vm)
         {
             if (id != vm.IdInstructor)
@@ -135,6 +142,7 @@ namespace ProyectoWebG2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EliminarConfirmed(int id)
         {
             var client = _factory.CreateClient("api");

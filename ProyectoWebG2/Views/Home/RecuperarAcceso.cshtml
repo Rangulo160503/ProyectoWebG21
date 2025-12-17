@@ -1,0 +1,42 @@
+﻿@model RecuperarVM
+
+@{
+    Layout = "_LayoutExterno";
+}
+
+<div class="authentication-wrapper authentication-basic container-p-y">
+    <div class="authentication-inner py-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="app-brand justify-content-center">
+                    <a class="app-brand-link gap-2">
+                        <img src="~/lib/img/logo.png" />
+                        <span class="app-brand-text demo text-body fw-bolder">Recuperar Acceso</span>
+                    </a>
+                </div>
+
+                @if (ViewBag.Mensaje != null)
+                {
+                    <div class="alert alert-primary text-center">
+                        @ViewBag.Mensaje
+                    </div>
+                }
+
+                <form id="FormRecuperarAcceso" class="mb-3" asp-action="RecuperarAcceso" asp-controller="Home">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" asp-for="CorreoElectronico" />
+                    </div>
+                    <button class="btn btn-primary d-grid w-100" type="submit">Procesar</button>
+                </form>
+                <div class="text-center">
+                    <a asp-action="Login" asp-controller="Home" class="d-flex align-items-center justify-content-center">
+                        Regresar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/RecuperarAcceso.js" asp-append-version="true"></script>

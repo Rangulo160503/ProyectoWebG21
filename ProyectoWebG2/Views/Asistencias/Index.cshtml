@@ -1,0 +1,29 @@
+@model List<ProyectoWebG2.Models.AsistenciaVM>
+@{
+    Layout = "_LayoutInterno";
+    ViewData["Title"] = "Asistencias";
+}
+<h2 class="mb-4">Asistencias</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>IdAsistencia</th>
+            <th>Estudiante</th>
+            <th>Curso</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>@a.IdAsistencia</td>
+                <td>@a.Nombre @a.Apellidos</td>
+                <td>@a.NombreCurso</td>
+                <td>@a.Fecha</td>
+                <td>@a.EstadoAsistencia</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,44 @@
+@model List<ProyectoWebG2.Models.CalificacionVM>
+@{
+    Layout = "_LayoutInterno";
+    ViewData["Title"] = "Calificaciones";
+}
+<h2 class="mb-4">Todas las Calificaciones</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Estudiante</th>
+            <th>Curso</th>
+            <th>Calificaci�n</th>
+            <th>Estado</th>
+            <th>Inicio</th>
+            <th>Finalizaci�n</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Nombre @c.Apellidos</td>
+                <td>@c.NombreCurso</td>
+                <td>
+                    @if (c.Calificacion.HasValue)
+                    {
+                        @c.Calificacion.Value.ToString("F2")
+                    }
+                    else
+                    {
+                        <span class="text-muted">Pendiente</span>
+                    }
+                </td>
+                <td>
+                    <span class="badge bg-@(c.Estado_Curso == "Aprobado" ? "success" : c.Estado_Curso == "Reprobado" ? "danger" : "warning")">
+                        @c.Estado_Curso
+                    </span>
+                </td>
+                <td>@c.Fecha_Inicio</td>
+                <td>@c.Fecha_Finalizacion</td>
+            </tr>
+        }
+    </tbody>
+</table>

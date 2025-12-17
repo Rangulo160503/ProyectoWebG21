@@ -1,0 +1,80 @@
+﻿@model UsuarioModel
+@{
+    Layout = "_LayoutExterno";
+    ViewData["Title"] = "Registro";
+}
+
+<div class="auth-wrap">
+    <div class="card mb-4 mx-0 shadow-sm" style="width:min(100%, 720px);">
+        <div class="card-body p-4">
+            <h1 class="h3 mb-1">Registro</h1>
+            <p class="text-body-secondary mb-4">Crea tu cuenta</p>
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Error"]</div>
+            }
+            @if (TempData["Msg"] != null)
+            {
+                <div class="alert alert-success">@TempData["Msg"]</div>
+            }
+
+            <form asp-action="Registro" asp-controller="Home" method="post" id="FormRegistro" novalidate>
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="Cedula">Cédula</label>
+                    <input class="form-control" asp-for="Cedula" />
+                    <span class="text-danger" asp-validation-for="Cedula"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="Nombre">Nombre</label>
+                    <input class="form-control" asp-for="Nombre" />
+                    <span class="text-danger" asp-validation-for="Nombre"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="Apellidos">Apellidos</label>
+                    <input class="form-control" asp-for="Apellidos" />
+                    <span class="text-danger" asp-validation-for="Apellidos"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="Telefono">Teléfono</label>
+                    <input class="form-control" asp-for="Telefono" />
+                    <span class="text-danger" asp-validation-for="Telefono"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="CorreoElectronico">Correo electrónico</label>
+                    <input class="form-control" asp-for="CorreoElectronico" />
+                    <span class="text-danger" asp-validation-for="CorreoElectronico"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="Contrasena">Contraseña</label>
+                    <input class="form-control" asp-for="Contrasena" type="password" />
+                    <span class="text-danger" asp-validation-for="Contrasena"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label" asp-for="ConfirmarContrasena">Confirmar contraseña</label>
+                    <input class="form-control" asp-for="ConfirmarContrasena" type="password" />
+                    <span class="text-danger" asp-validation-for="ConfirmarContrasena"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success" type="submit">Crear cuenta</button>
+                    <a class="btn btn-link" asp-controller="Home" asp-action="Login">¿Ya tienes cuenta? Inicia sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Registro.js" asp-append-version="true"></script>
+}

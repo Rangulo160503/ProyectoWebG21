@@ -1,0 +1,192 @@
+@model List<ProyectoWebG2.Models.CursoDisponibleVM>
+@{
+    ViewData["Title"] = "Cursos Disponibles";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-book"></i> Cursos Disponibles</h2>
+        <a href="@Url.Action("Index", "Estudiantes")" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al Panel
+        </a>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No hay cursos disponibles en este momento.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var curso in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">@curso.NombreCurso</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <strong><i class="bi bi-person-badge"></i> Instructor:</strong><br />
+                                @curso.NombreInstructor
+                            </p>
+                            <p class="card-text">
+                                <strong><i class="bi bi-calendar-event"></i> Inicio:</strong> 
+                                @curso.FechaDeInicio.ToString("dd/MM/yyyy")
+                            </p>
+                            <p class="card-text">
+                                <strong><i class="bi bi-calendar-check"></i> Finalización:</strong> 
+                                @curso.FechaDeFinalizacion.ToString("dd/MM/yyyy")
+                            </p>
+                            <p class="card-text">
+                                <strong><i class="bi bi-clock"></i> Duración:</strong> 
+                                @curso.DuracionCurso semanas
+                            </p>
+                            <p class="card-text">
+                                <strong><i class="bi bi-tag"></i> Categoría:</strong> 
+                                @curso.Categoria
+                            </p>
+                            <p class="card-text">
+                                <strong><i class="bi bi-laptop"></i> Modalidad:</strong> 
+                                @curso.Modalidad
+                            </p>
+                            <p class="card-text">
+                                <strong><i class="bi bi-people"></i> Cupos:</strong> 
+                                <span class="badge bg-success">@curso.CuposDisponibles disponibles</span>
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" 
+                                    class="btn btn-primary w-100" 
+                                    onclick="mostrarModalMatricula(@curso.IdCurso, '@curso.NombreCurso')">
+                                <i class="bi bi-pencil-square"></i> Matricular
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Modal para seleccionar horario -->
+<div class="modal fade" id="modalMatricula" tabindex="-1" aria-labelledby="modalMatriculaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMatriculaLabel">Matricular en Curso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Curso:</strong> <span id="nombreCursoModal"></span></p>
+                <input type="hidden" id="idCursoModal" />
+                
+                <div class="mb-3">
+                    <label for="selectHorario" class="form-label">Seleccione un horario:</label>
+                    <select class="form-select" id="selectHorario">
+                        <option value="">Cargando horarios...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="confirmarMatricula()">
+                    <i class="bi bi-check-circle"></i> Confirmar Matrícula
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var modalMatricula = new bootstrap.Modal(document.getElementById('modalMatricula'));
+
+        function mostrarModalMatricula(idCurso, nombreCurso) {
+            document.getElementById('idCursoModal').value = idCurso;
+            document.getElementById('nombreCursoModal').textContent = nombreCurso;
+            
+            // Cargar horarios
+            fetch('@Url.Action("ObtenerHorarios", "Estudiantes")' + '?idCurso=' + idCurso)
+                .then(response => response.json())
+                .then(data => {
+                    var select = document.getElementById('selectHorario');
+                    select.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        select.innerHTML = '<option value="">No hay horarios disponibles</option>';
+                    } else {
+                        select.innerHTML = '<option value="">-- Seleccione un horario --</option>';
+                        data.forEach(horario => {
+                            var option = document.createElement('option');
+                            // Usar propiedades con mayúscula inicial como vienen de C#
+                            option.value = horario.IdHorario || horario.idHorario;
+                            var horaInicio = horario.HoraInicio || horario.horaInicio;
+                            var horaFin = horario.HoraFin || horario.horaFin;
+                            var diaSemana = horario.DiaSemana || horario.diaSemana;
+                            option.textContent = `${diaSemana} - ${horaInicio} a ${horaFin}`;
+                            select.appendChild(option);
+                        });
+                    }
+                    
+                    modalMatricula.show();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al cargar los horarios');
+                });
+        }
+
+        function confirmarMatricula() {
+            var idCurso = document.getElementById('idCursoModal').value;
+            var idHorario = document.getElementById('selectHorario').value;
+            
+            if (!idHorario) {
+                alert('Por favor seleccione un horario');
+                return;
+            }
+
+            var data = {
+                idCurso: parseInt(idCurso),
+                idHorario: parseInt(idHorario)
+            };
+
+            fetch('@Url.Action("Matricular", "Estudiantes")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': '@Html.AntiForgeryToken()'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert(result.message);
+                    modalMatricula.hide();
+                    location.reload();
+                } else {
+                    alert(result.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al matricular en el curso');
+            });
+        }
+    </script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+}

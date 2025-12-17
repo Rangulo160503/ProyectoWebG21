@@ -1,0 +1,72 @@
+﻿@model LoginVM
+@{
+    Layout = "_LayoutExterno";
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<div class="auth-wrap">
+    <div class="card-group d-block d-md-flex row auth-card">
+        <div class="card col-md-7 p-4 mb-0">
+            <div class="card-body">
+                <h1 class="h3 mb-1">Iniciar sesión</h1>
+                <p class="text-body-secondary mb-4">Accede a tu cuenta</p>
+
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["Error"]</div>
+                }
+                @if (TempData["Msg"] != null)
+                {
+                    <div class="alert alert-success">@TempData["Msg"]</div>
+                }
+
+                <form id="FormIniciarSesion"
+                      class="mb-3"
+                      asp-action="LoginPost"
+                      asp-controller="Home"
+                      method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="CorreoElectronico">Correo electrónico</label>
+                        <input class="form-control" asp-for="CorreoElectronico" placeholder="tu@correo.com" />
+                        <span class="text-danger" asp-validation-for="CorreoElectronico"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Contrasena">Contraseña</label>
+                        <input class="form-control" asp-for="Contrasena" type="password" placeholder="••••••" />
+                        <span class="text-danger" asp-validation-for="Contrasena"></span>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <div class="col-6">
+                            <button class="btn btn-primary px-4" type="submit">Entrar</button>
+                        </div>
+                        <div class="col-6 text-end">
+                            <a asp-controller="Home" asp-action="RecuperarAcceso">¿Olvidaste la contraseña?</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card col-md-5 text-white bg-primary py-5">
+            <div class="card-body text-center d-flex align-items-center justify-content-center">
+                <div>
+                    <h2 class="h3 mb-3">Regístrate</h2>
+                    <p class="opacity-75 mb-4">Crea tu cuenta para acceder a todas las funciones del sistema.</p>
+                    <a class="btn btn-lg btn-outline-light" asp-action="Registro" asp-controller="Home">
+                        Crear cuenta
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/IniciarSesion.js" asp-append-version="true"></script>
+}

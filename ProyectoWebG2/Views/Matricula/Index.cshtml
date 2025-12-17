@@ -1,0 +1,29 @@
+@model List<ProyectoWebG2.Models.MatriculaVM>
+@{
+    Layout = "_LayoutInterno";
+    ViewData["Title"] = "Matrículas";
+}
+<h2 class="mb-4">Todas las Matrículas</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>IdMatricula</th>
+            <th>Estudiante</th>
+            <th>Curso</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m.IdMatricula</td>
+                <td>@m.Nombre @m.Apellidos</td>
+                <td>@m.NombreCurso</td>
+                <td>@m.FechaMatricula</td>
+                <td>@m.Estado</td>
+            </tr>
+        }
+    </tbody>
+</table>

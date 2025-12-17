@@ -1,0 +1,121 @@
+﻿@{
+    Layout = "_LayoutInterno";
+    ViewData["Title"] = "Panel de Administración";
+    ViewData["Breadcrumb"] = "Administración";
+
+    // Sidebar verde (ya está soportado en tu layout)
+    ViewData["SidebarClass"] = "sidebar sidebar-admin";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="mb-0">Panel de Administración</h2>
+            <small class="text-muted">Desde aquí el administrador gestiona todo el sistema.</small>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Matrículas -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    Matrículas
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="mb-3">
+                        Gestionar las matrículas de los estudiantes en los diferentes cursos.
+                    </p>
+                    <a asp-controller="Matricula" asp-action="Index" class="btn btn-success mt-auto">
+                        Ir a matrículas
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cursos -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    Cursos
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="mb-3">
+                        Crear, editar y desactivar cursos disponibles en la plataforma.
+                    </p>
+                    <a asp-controller="Cursos" asp-action="Index" class="btn btn-primary mt-auto">
+                        Administrar cursos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calificaciones -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header bg-warning text-dark">
+                    Calificaciones
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="mb-3">
+                        Revisar las calificaciones asignadas por los instructores a los estudiantes.
+                    </p>
+                    <a asp-controller="Estudiantes" asp-action="Calificaciones" class="btn btn-warning mt-auto">
+                        Ver calificaciones
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crear instructores -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                    Crear instructores
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="mb-3">
+                        Registrar nuevos instructores en el sistema y asignarles un usuario.
+                    </p>
+                    <a asp-controller="Instructores" asp-action="Create" class="btn btn-info mt-auto">
+                        Crear instructor
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Asignar cursos a instructores -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">
+                    Asignar cursos a instructores
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="mb-3">
+                        Definir qué cursos impartirá cada instructor.
+                    </p>
+                    <a asp-controller="Instructores" asp-action="AsignarCursos" class="btn btn-secondary mt-auto">
+                        Asignar cursos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Asistencias -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header bg-danger text-white">
+                    Asistencias
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="mb-3">
+                        Consultar y administrar la asistencia de los estudiantes en cada curso.
+                    </p>
+                    <a asp-controller="Asistencias" asp-action="Index" class="btn btn-danger mt-auto">
+                        Ver asistencias
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

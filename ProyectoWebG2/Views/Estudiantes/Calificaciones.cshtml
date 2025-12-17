@@ -1,0 +1,151 @@
+@model List<ProyectoWebG2.Models.CalificacionCursoVM>
+@{
+    ViewData["Title"] = "Mis Calificaciones";
+    Layout = "_LayoutInterno";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-award"></i> Mis Calificaciones</h2>
+        <a href="@Url.Action("Index", "Estudiantes")" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al Panel
+        </a>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No hay calificaciones registradas aún.
+            <a href="@Url.Action("CursosDisponibles", "Estudiantes")" class="alert-link">
+                Matricúlate en un curso
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="bi bi-clipboard-data"></i> Historial de Calificaciones
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col"><i class="bi bi-book"></i> Curso</th>
+                                <th scope="col"><i class="bi bi-star"></i> Calificación</th>
+                                <th scope="col"><i class="bi bi-check-circle"></i> Estado</th>
+                                <th scope="col"><i class="bi bi-calendar-event"></i> Fecha Finalización</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                var calificacion = Model[i];
+                                <tr>
+                                    <th scope="row">@(i + 1)</th>
+                                    <td>@calificacion.NombreCurso</td>
+                                    <td>
+                                        @if (calificacion.Calificacion.HasValue)
+                                        {
+                                            var nota = calificacion.Calificacion.Value;
+                                            var badgeClass = nota >= 7 ? "bg-success" : nota >= 6 ? "bg-warning" : "bg-danger";
+                                            <span class="badge @badgeClass">@nota.ToString("N2")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Pendiente</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            var estadoBadge = calificacion.EstadoCurso switch
+                                            {
+                                                "Aprobado" => "bg-success",
+                                                "Reprobado" => "bg-danger",
+                                                "En Curso" => "bg-info",
+                                                "Retirado" => "bg-secondary",
+                                                _ => "bg-warning"
+                                            };
+                                        }
+                                        <span class="badge @estadoBadge">@calificacion.EstadoCurso</span>
+                                    </td>
+                                    <td>
+                                        @if (calificacion.FechaFinalizacion.HasValue)
+                                        {
+                                            @calificacion.FechaFinalizacion.Value.ToString("dd/MM/yyyy")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Resumen de calificaciones -->
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="alert alert-light border">
+                            <h6 class="alert-heading"><i class="bi bi-calculator"></i> Resumen</h6>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <strong>Total Cursos:</strong> @Model.Count
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Aprobados:</strong> @Model.Count(c => c.EstadoCurso == "Aprobado")
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>En Curso:</strong> @Model.Count(c => c.EstadoCurso == "En Curso")
+                                </div>
+                                <div class="col-md-3">
+                                    @{
+                                        var calificacionesConNota = Model.Where(c => c.Calificacion.HasValue).ToList();
+                                        var promedio = calificacionesConNota.Any() 
+                                            ? calificacionesConNota.Average(c => (double)c.Calificacion.Value) 
+                                            : 0;
+                                    }
+                                    <strong>Promedio:</strong> @promedio.ToString("N2")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leyenda -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h6><i class="bi bi-info-circle"></i> Leyenda de Estados</h6>
+                        <span class="badge bg-success me-2">Aprobado</span>
+                        <span class="badge bg-danger me-2">Reprobado</span>
+                        <span class="badge bg-info me-2">En Curso</span>
+                        <span class="badge bg-secondary me-2">Retirado</span>
+                        <span class="badge bg-warning me-2">Otro</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+}

@@ -1,0 +1,36 @@
+@{
+    Layout = "_LayoutInterno";
+    ViewData["Title"] = "Asignar Cursos a Instructores";
+    var cursos = ViewBag.Cursos as List<dynamic>;
+    var instructores = ViewBag.Instructores as List<dynamic>;
+}
+<h2 class="mb-4">Asignar Curso a Instructor</h2>
+<form asp-action="Index" method="post">
+    <div class="mb-3">
+        <label class="form-label">Curso</label>
+        <select name="idCurso" class="form-control">
+            @foreach (var c in cursos)
+            {
+                <option value="@c.IdCurso">@c.NombreCurso</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Instructor</label>
+        <select name="idInstructor" class="form-control">
+            @foreach (var i in instructores)
+            {
+                <option value="@i.IdInstructor">@i.NombreInstructor</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Asignar</button>
+</form>
+@if (TempData["Msg"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["Msg"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3">@TempData["Error"]</div>
+}

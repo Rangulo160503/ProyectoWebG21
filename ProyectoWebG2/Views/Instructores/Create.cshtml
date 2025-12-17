@@ -1,0 +1,41 @@
+@model ProyectoWebG2.Models.InstructorVM
+@{
+    Layout = "_LayoutInterno";
+    ViewData["Title"] = "Crear Instructor";
+}
+<h2 class="mb-4">Crear Instructor</h2>
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Cédula</label>
+        <input asp-for="Cedula" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input asp-for="Nombre" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Apellidos</label>
+        <input asp-for="Apellidos" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Teléfono</label>
+        <input asp-for="Telefono" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Correo</label>
+        <input asp-for="Correo" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Contraseña</label>
+        <input asp-for="ContrasenaHash" class="form-control" type="password" />
+    </div>
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>
+@if (TempData["Msg"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["Msg"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3">@TempData["Error"]</div>
+}

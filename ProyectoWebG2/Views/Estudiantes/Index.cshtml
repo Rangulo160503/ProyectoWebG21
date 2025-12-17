@@ -1,0 +1,93 @@
+@{
+    ViewData["Title"] = "Panel de Estudiante";
+    var nombreUsuario = ViewBag.NombreUsuario ?? "Estudiante";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="bi bi-person-circle"></i> 
+                Bienvenido, @nombreUsuario
+            </h2>
+            <p class="lead">Panel de Estudiante - Gestión de Cursos</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Card Cursos Disponibles -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-primary">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-book" style="font-size: 3rem; color: #0d6efd;"></i>
+                    </div>
+                    <h5 class="card-title">Cursos Disponibles</h5>
+                    <p class="card-text">
+                        Explora todos los cursos disponibles y matricúlate en los que te interesen.
+                    </p>
+                    <a href="@Url.Action("CursosDisponibles", "Estudiantes")" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Ver Cursos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Cursos Matriculados -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-success">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-journal-check" style="font-size: 3rem; color: #198754;"></i>
+                    </div>
+                    <h5 class="card-title">Mis Cursos</h5>
+                    <p class="card-text">
+                        Consulta los cursos en los que estás matriculado actualmente.
+                    </p>
+                    <a href="@Url.Action("CursosMatriculados", "Estudiantes")" class="btn btn-success">
+                        <i class="bi bi-list-check"></i> Ver Matriculados
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Calificaciones -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-warning">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-award" style="font-size: 3rem; color: #ffc107;"></i>
+                    </div>
+                    <h5 class="card-title">Mis Calificaciones</h5>
+                    <p class="card-text">
+                        Revisa tus calificaciones y el estado de tus cursos.
+                    </p>
+                    <a href="@Url.Action("Calificaciones", "Estudiantes")" class="btn btn-warning">
+                        <i class="bi bi-clipboard-data"></i> Ver Calificaciones
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <h5 class="alert-heading">
+                    <i class="bi bi-info-circle"></i> Información Importante
+                </h5>
+                <ul class="mb-0">
+                    <li>Puedes matricularte en múltiples cursos según la disponibilidad de cupos.</li>
+                    <li>Recuerda seleccionar el horario que mejor se ajuste a tu disponibilidad.</li>
+                    <li>Si necesitas renunciar a un curso, puedes hacerlo desde "Mis Cursos".</li>
+                    <li>Las calificaciones se actualizarán una vez que el instructor las registre.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+}

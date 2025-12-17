@@ -1,0 +1,51 @@
+﻿@{
+Layout = "_LayoutInterno";
+ViewData["Title"] = "Inicio";
+ViewData["Breadcrumb"] = "Dashboard";
+ViewData["Breadcrumb"] = "Inicio";
+}
+
+
+<div class="row g-4 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <span>Usuarios</span>
+                <svg class="icon"><use xlink:href="~/icons/free.svg#cil-arrow-bottom"></use></svg>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card text-white bg-info">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <span>Ingresos</span>
+                <svg class="icon"><use xlink:href="~/icons/free.svg#cil-arrow-top"></use></svg>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <span>Tasa de conversión</span>
+                <svg class="icon"><use xlink:href="~/icons/free.svg#cil-arrow-top"></use></svg>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <span>Sesiones</span>
+                <svg class="icon"><use xlink:href="~/icons/free.svg#cil-arrow-bottom"></use></svg>
+            </div>
+        </div>
+    </div>
+</div>
+_
+
+<div class="mb-4 text-center">
+    <a href="@Url.Action("Calificaciones", "Estudiantes")" class="btn btn-primary btn-lg">
+        <svg class="icon me-2"><use xlink:href="~/icons/free.svg#cil-star"></use></svg>
+        Ver mis calificaciones
+    </a>
+</div>
+

@@ -33,6 +33,7 @@ namespace ProyectoWebG2.Controllers
             var client = _factory.CreateClient("api");
             var payload = new InstructorVM
             {
+                IdInstructor = vm.IdInstructor,
                 Cedula = vm.Cedula,
                 Nombre = vm.Nombre,
                 Apellidos = vm.Apellidos,
@@ -48,6 +49,113 @@ namespace ProyectoWebG2.Controllers
             }
             TempData["Error"] = "No se pudo crear el instructor.";
             return View(vm);
+        }
+
+        public async Task<IActionResult> Editar(int id)
+        {
+            var client = _factory.CreateClient("api");
+            var instructor = await client.GetFromJsonAsync<InstructorListadoVM>($"admin/instructores/{id}");
+
+            if (instructor == null)
+            {
+                TempData["Error"] = "El instructor no existe.";
+                return RedirectToAction("Index");
+            }
+
+            var vm = new InstructorVM
+            {
+                IdInstructor = instructor.IdInstructor,
+                Cedula = instructor.Cedula,
+                Nombre = instructor.Nombre,
+                Apellidos = instructor.Apellidos,
+                Telefono = instructor.Telefono,
+                Correo = instructor.Correo
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Editar(int id, InstructorVM vm)
+        {
+            if (id != vm.IdInstructor)
+            {
+                TempData["Error"] = "Los datos del instructor no coinciden.";
+                return RedirectToAction("Index");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var client = _factory.CreateClient("api");
+            var instructor = await client.GetFromJsonAsync<InstructorListadoVM>($"admin/instructores/{id}");
+
+            if (instructor == null)
+            {
+                TempData["Error"] = "El instructor no existe.";
+                return RedirectToAction("Index");
+            }
+
+            var payload = new InstructorVM
+            {
+                Cedula = vm.Cedula,
+                Nombre = vm.Nombre,
+                Apellidos = vm.Apellidos,
+                Telefono = vm.Telefono,
+                Correo = vm.Correo,
+                ContrasenaHash = string.IsNullOrWhiteSpace(vm.ContrasenaHash) ? string.Empty : HashPassword(vm.ContrasenaHash)
+            };
+
+            var res = await client.PutAsJsonAsync($"admin/instructores/{id}", payload);
+
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["Mensaje"] = "Instructor actualizado correctamente.";
+                return RedirectToAction("Index");
+            }
+
+            TempData["Error"] = "No se pudo actualizar el instructor.";
+            return View(vm);
+        }
+
+        public async Task<IActionResult> Eliminar(int id)
+        {
+            var client = _factory.CreateClient("api");
+            var instructor = await client.GetFromJsonAsync<InstructorListadoVM>($"admin/instructores/{id}");
+
+            if (instructor == null)
+            {
+                TempData["Error"] = "El instructor no existe.";
+                return RedirectToAction("Index");
+            }
+
+            return View(instructor);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EliminarConfirmed(int id)
+        {
+            var client = _factory.CreateClient("api");
+            var instructor = await client.GetFromJsonAsync<InstructorListadoVM>($"admin/instructores/{id}");
+
+            if (instructor == null)
+            {
+                TempData["Error"] = "El instructor ya no existe.";
+                return RedirectToAction("Index");
+            }
+
+            var res = await client.DeleteAsync($"admin/instructores/{id}");
+
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["Mensaje"] = "Instructor eliminado correctamente.";
+                return RedirectToAction("Index");
+            }
+
+            TempData["Error"] = "No se pudo eliminar el instructor.";
+            return RedirectToAction("Eliminar", new { id });
         }
 
         // Hash igual que en HomeController

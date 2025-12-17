@@ -1,0 +1,55 @@
+@model ProyectoWebG2.Models.InstructorVM
+@{
+    Layout = "_LayoutInterno";
+    ViewData["Title"] = "Editar Instructor";
+}
+
+<h2 class="mb-4">Editar Instructor</h2>
+<form asp-action="Editar" method="post">
+    <input type="hidden" asp-for="IdInstructor" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Cedula" class="form-label"></label>
+        <input asp-for="Cedula" class="form-control" />
+        <span asp-validation-for="Cedula" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Apellidos" class="form-label"></label>
+        <input asp-for="Apellidos" class="form-control" />
+        <span asp-validation-for="Apellidos" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Telefono" class="form-label"></label>
+        <input asp-for="Telefono" class="form-control" />
+        <span asp-validation-for="Telefono" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Correo" class="form-label"></label>
+        <input asp-for="Correo" class="form-control" />
+        <span asp-validation-for="Correo" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ContrasenaHash" class="form-label">Contraseña (dejar en blanco para no cambiar)</label>
+        <input asp-for="ContrasenaHash" class="form-control" type="password" />
+        <span asp-validation-for="ContrasenaHash" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Volver</a>
+</form>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["Mensaje"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3">@TempData["Error"]</div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

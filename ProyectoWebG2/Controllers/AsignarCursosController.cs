@@ -24,10 +24,10 @@ namespace ProyectoWebG2.Controllers
             var instructoresResponse = await client.GetAsync("api/Instructores");
             instructoresResponse.EnsureSuccessStatusCode();
             var instructoresJson = await instructoresResponse.Content.ReadAsStringAsync();
-            var instructores = JsonSerializer.Deserialize<List<InstructorVM>>(instructoresJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var instructores = JsonSerializer.Deserialize<List<InstructorListadoVM>>(instructoresJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             ViewBag.Cursos = cursos ?? new List<Curso>();
-            ViewBag.Instructores = instructores ?? new List<InstructorVM>();
+            ViewBag.Instructores = instructores ?? new List<InstructorListadoVM>();
             return View();
         }
 

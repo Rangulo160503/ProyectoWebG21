@@ -57,6 +57,30 @@ namespace ProyectoWebG2Api.Controllers
         }
 
 
+        [HttpGet("instructores")]
+        public IActionResult GetInstructores()
+        {
+            using var cn = new SqlConnection(_cfg["ConnectionStrings:BDConnection"]);
+            var sql = @"
+                SELECT 
+                    u.IdUsuario   AS IdInstructor,
+                    u.Cedula,
+                    u.Nombre,
+                    u.Apellidos,
+                    u.Telefono,
+                    u.Correo,
+                    COUNT(c.IdCurso) AS CursosAsignados
+                FROM dbo.Usuario u
+                LEFT JOIN dbo.Curso c ON c.IdInstructor = u.IdUsuario
+                WHERE u.IdRol = 3
+                GROUP BY u.IdUsuario, u.Cedula, u.Nombre, u.Apellidos, u.Telefono, u.Correo
+                ORDER BY u.Nombre, u.Apellidos";
+
+            var result = cn.Query<InstructorListado>(sql);
+            return Ok(result);
+        }
+
+
         [HttpPost("instructores")]
         public IActionResult CrearInstructor([FromBody] CrearInstructorRequest req)
         {

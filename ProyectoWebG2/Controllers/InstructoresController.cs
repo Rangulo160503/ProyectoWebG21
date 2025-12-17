@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using ProyectoWebG2.Models;
 using System.Net.Http.Json;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace ProyectoWebG2.Controllers
 {
@@ -14,6 +13,13 @@ namespace ProyectoWebG2.Controllers
             _factory = factory;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var client = _factory.CreateClient("api");
+            var instructores = await client.GetFromJsonAsync<List<InstructorListadoVM>>("admin/instructores");
+            return View(instructores ?? new List<InstructorListadoVM>());
+        }
+
         public IActionResult Create()
         {
             return View();
@@ -22,7 +28,7 @@ namespace ProyectoWebG2.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(InstructorVM vm)
         {
-            // Hash de la contraseña igual que en el registro de usuario
+            // Hash de la contraseÃ±a igual que en el registro de usuario
             string contrasenaHash = HashPassword(vm.ContrasenaHash);
             var client = _factory.CreateClient("api");
             var payload = new InstructorVM

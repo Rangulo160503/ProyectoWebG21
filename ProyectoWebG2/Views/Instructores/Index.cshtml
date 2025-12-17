@@ -1,0 +1,48 @@
+@model IEnumerable<ProyectoWebG2.Models.InstructorListadoVM>
+@{
+    Layout = "_LayoutInterno";
+    ViewData["Title"] = "Instructores";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h2 class="mb-0">Instructores</h2>
+        <p class="text-muted mb-0">Consulta rápida de los instructores y los cursos asignados.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">Registrar nuevo instructor</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No hay instructores registrados todavía.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cédula</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th class="text-center">Cursos asignados</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var instructor in Model)
+            {
+                <tr>
+                    <td>@instructor.NombreCompleto</td>
+                    <td>@instructor.Cedula</td>
+                    <td>@instructor.Telefono</td>
+                    <td>@instructor.Correo</td>
+                    <td class="text-center">
+                        <span class="badge bg-secondary">@instructor.CursosAsignados</span>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
